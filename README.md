@@ -1,5 +1,20 @@
 # passworcrackalack
-Upon running the .py file, you will be prompted what on what type of encyrption you are wanting to break, and then you can input the encrypted text into the input, and then asks if you want to linearly bruteforce, or spray.
-The code will first iterate through a file of the top 10k most common passwords, then iterates through the entire English dictionary before trying to bruteforce the code.
+This is passwordcrackalack, a surprisingly well-designed hash cracker. 
+# examples
+to run an dictionary attack you would type:
 
-It's sooo awesome to have coding.
+python3 passwordcrackalack.py -h (your hash) -t (type of hash) -w (dictrionary you prefer)
+
+I included a text file lableled "mega.txt" with a lot of potential passwords and every word in the english dictionary
+
+To run a bruteforce attack you would run
+
+python3 passwordcrackalack.py -h (your hash) -t (type of hash) -n (put this instead of -w)
+
+This linearly guesses words.
+Optionally, if you wanted to add "-v" at the end of your prompt and you will print out each guess, but this will make the code take much much longer.
+
+Additionally if you want you can just type "python3 passwordcrackalack.py -i" for a quick tutorial
+
+
+Thank you to Vanson Spaghetti for helping my brute force algorithim
