@@ -26,7 +26,7 @@ def tutorial():
 def checkOS():
     if os.name == "nt":
         operatingSystem = "Windows"
-    elif os.name == "linux":
+    elif os.name == "posix":
         operatingSystem = "Linux"
     else:
         operatingSystem = "Wth are you running this on"
