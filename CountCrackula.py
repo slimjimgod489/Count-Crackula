@@ -8,7 +8,7 @@ import itertools , string
 
 #introductory
 print("  ")
-print("Passwordcrackalack")
+print("Count Crackula")
 print("for my vampire teacher")
 
 #simple tutorial
@@ -120,8 +120,8 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "ih:t:w:nv", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        print(' type python3 passwordcrackalack.py -h (your hash) -t (type of hash) -w (dictrionary you prefer)')
-        print(' Type python3 passwordcrackalack.py -i for tutorial')
+        print(' type python3 CountCrackula.py -h (your hash) -t (type of hash) -w (dictrionary you prefer)')
+        print(' Type python3 CountCrackula.py -i for tutorial')
         sys.exit(1)
     for opt, arg in opts:
         if opt == '-i':
@@ -138,7 +138,7 @@ def main(argv):
         elif opt in ("-n", "--numbers"):
             numbersBruteForce = True
     if not (hashType and userHash):
-        print(' python3 passwordcrackalack.py -h (your hash) -t (type of hash) -w (dictrionary you prefer)')
+        print(' python3 CountCrackula.py -h (your hash) -t (type of hash) -w (dictrionary you prefer)')
         sys.exit()
 
     with open('SavedHashes.txt', 'a+') as savedHashFile:
