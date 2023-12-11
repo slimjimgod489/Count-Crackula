@@ -3,6 +3,7 @@ import hashlib
 import sys
 import os
 import time
+import itertools , string
 
 print("  ")
 print("Passwordcrackalack")
@@ -16,7 +17,7 @@ def tutorial():
     print(" (-h) Hash")
     print(" (-t) Type of hash, supported = md5, sha1 ")
     print(" (-w) Wordlist, this is your dictionary attack")
-    print(" (-n) Numbers of each attempt")
+    print(" (-n) replace -w with this to bruteforce")
     print(" (-v) Verbose prints every try, just takes longer\n")
 
 
@@ -31,8 +32,10 @@ def checkOS():
 
 
 class hashCracking:
+    
 
-    def hashCrackWordlist(self, userHash, hashType, wordlist, verbose, bruteForce=False):
+
+    def hashCrackWordlist(self, userHash, hashType, wordlist, verbose, bruteForce = False):
         start = time.time()
         solved = False
         self.lineCount = 0
@@ -53,34 +56,26 @@ class hashCracking:
             exit()
         if bruteForce is True:
             while True:
-                line = self.lineCount
-                line.strip()
-                numberHash = h(line).hexdigest().strip()
-                if verbose is True:
-                    sys.stdout.write('\r' + str(line) + ' ' * 20)
-                    sys.stdout.flush()
-                if numberHash.strip() == userHash.strip().lower():
-                    end = time.time()
-                    print("\n[+] Hash is: %s" % self.lineCount)
-                    print(" Time: %s seconds" % round((end - start), 2))
-                    savedHashFile = open('SavedHashes.txt', 'a+')
-                    for solvedHash in savedHashFile:
-                        if numberHash in solvedHash.split(":")[1].strip():
-                            solved = True
-                    if solved is False:
-                        print(" Hash to SavedHashes.txt")
-                        savedHashFile.write('%s:{}'.format(numberHash) % line)
-                        savedHashFile.write('\n')
-                    savedHashFile.close()
-                    exit()
-                else:
-                    self.lineCount = self.lineCount + 1
+                attempts = 0
+                alphabet = string.printable
+                for length in range (1 , len(alphabet)):
+                    for combination in itertools.product(alphabet , repeat = length):
+                        bruteForceGuess = "".join(combination)
+                        attempts += 1
+                        if verbose is True:
+                            print(attempts , bruteForceGuess)
+                        if h(bruteForceGuess.encode('utf-8')).hexdigest() == userHash:
+                            end = time.time()
+                            print(f"\n[+] Hash is: {bruteForceGuess}")
+                            print(f"Combinations tried: {attempts}")
+                            print(f" Time: {round((end - start), 2)} seconds")
+                exit()
         else:
-            with open(wordlist, "r") as infile:
-                for line in infile:
+            with open(wordlist, "r") as file:
+                for line in file:
                     line = line.strip()
-                    encodeline= str.encode(line)
-                    lineHash = h(encodeline).hexdigest()
+                    encodeLine= str.encode(line)
+                    lineHash = h(encodeLine).hexdigest()
                     if verbose is True:
                         sys.stdout.write('\r' + str(line) + ' ' * 20)
                         sys.stdout.flush()
@@ -121,8 +116,8 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "ih:t:w:nv", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        print(' type python passwordcrackalack -h (your hash) -t (type of hash) -w (dictrionary you prefer)')
-        print(' Type python passwordcrackalack -i for tutorial')
+        print(' type python3 passwordcrackalack.py -h (your hash) -t (type of hash) -w (dictrionary you prefer)')
+        print(' Type python3 passwordcrackalack.py -i for tutorial')
         sys.exit(1)
     for opt, arg in opts:
         if opt == '-i':
@@ -139,7 +134,7 @@ def main(argv):
         elif opt in ("-n", "--numbers"):
             numbersBruteForce = True
     if not (hashType and userHash):
-        print(' python passwordcrackalack -h (your hash) -t (type of hash) -w (dictrionary you prefer)')
+        print(' python3 passwordcrackalack.py -h (your hash) -t (type of hash) -w (dictrionary you prefer)')
         sys.exit()
 
     with open('SavedHashes.txt', 'a+') as savedHashFile:
@@ -169,8 +164,8 @@ def main(argv):
 
             except IOError as e:
                 print("\n[-] Couldn't find wordlist")
-                print(" Is this right?")
-                print(f"[>] {wordlist}")
+                print(" did you type .txt? or whatever the extention is?")
+                print(f"This is what you typed > {wordlist}")
 
 
 if __name__ == "__main__":
