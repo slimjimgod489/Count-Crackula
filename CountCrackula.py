@@ -164,7 +164,6 @@ def main(argv):
 
             except KeyboardInterrupt:
                 print("\n[Exiting...]")
-                print(f" Words tried: {h.lineCount}")
 
             except IOError as e:
                 print("\n[-] Couldn't find wordlist")
